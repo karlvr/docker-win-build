@@ -6,11 +6,13 @@ osslsigncode is used in preference to Mono signcode as Mono signcode cannot sign
 
 ## Usage
 
+You can run the image interactively, or run individual commands or scripts by appending them
+to the run command.
 
-### Interactive
+Mount your working dir to `/build` in the Docker container. That is the default working dir.
 
 ```
-docker run -it -v ~/src:/src karlvr/win-build
+docker run -v ~/build:/build karlvr/win-build ...
 ```
 
 ### Compiling
