@@ -3,14 +3,13 @@
 
 # Run WiX on Linux using Wine
 
-FROM ubuntu
-MAINTAINER Karl von Randow <karl@xk72.com>
+FROM ubuntu:22.04
 
-RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
 
 ###############################################################################
 # MingW
-RUN apt-get install -y mingw-w64 mingw-w64-tools
+RUN apt-get update && apt-get install -y mingw-w64 mingw-w64-tools
 
 ###############################################################################
 # osslsigncode
@@ -32,10 +31,11 @@ RUN apt-get update && apt-get install -y osslsigncode
 
 # Wine repository
 RUN dpkg --add-architecture i386 && \
-	apt-get install -y wget apt-transport-https && \
-	wget -nc https://dl.winehq.org/wine-builds/Release.key && \
-	apt-key add Release.key && \
-	echo "deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main" > /etc/apt/sources.list.d/winehq.list && \
+	apt-get update && \
+	apt-get install -y wget apt-transport-https gnupg lsb-core && \
+	mkdir -p /etc/apt/keyrings && \
+	wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+	wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -cs)/winehq-$(lsb_release -cs).sources && \
 	apt-get update
 
 # Install Wine
