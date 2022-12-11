@@ -8,3 +8,7 @@ build:
 .PHONY: pull
 pull:
 	docker pull ubuntu:22.04
+
+.PHONY: push
+push:
+	docker push karlvr/win-build
