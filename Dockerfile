@@ -15,7 +15,8 @@ RUN apt-get update && \
 	apt-get install -y curl xz-utils && \
 	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20220906/llvm-mingw-20220906-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
 	mkdir -p /llvm-mingw && \
-	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz
+	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
+	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
 
 ###############################################################################
 # osslsigncode
