@@ -64,12 +64,13 @@ RUN apt-get install -y xauth ca-certificates
 RUN useradd --create-home --home /home/builder --groups users builder --shell /bin/bash
 RUN mkdir /build
 
+RUN apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
+
 USER builder
 WORKDIR /build
 
 # Setup Dotnet 4.0
 ENV WINEARCH=win32
-RUN /usr/local/bin/winetricks --unattended dotnet40
-
-RUN apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+RUN /usr/local/bin/winetricks --unattended dotnet40 && \
+	rm -rf /tmp/winetricks*
