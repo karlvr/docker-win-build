@@ -14,7 +14,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
 	apt-get install -y curl xz-utils && \
 	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20220906/llvm-mingw-20220906-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
-	tar -C / -xf /tmp/llvm-mingw.tar.xz
+	mkdir -p /llvm-mingw && \
+	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz
 
 ###############################################################################
 # osslsigncode
