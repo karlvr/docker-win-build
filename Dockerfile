@@ -3,13 +3,18 @@
 
 # Run WiX on Linux using Wine
 
-FROM ubuntu:22.04
+ARG ARCH=
+FROM ${ARCH}ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 ###############################################################################
-# MingW
-RUN apt-get update && apt-get install -y mingw-w64 mingw-w64-tools
+# llvm-mingw
+# https://github.com/mstorsjo/llvm-mingw
+RUN apt-get update && \
+	apt-get install -y curl xz-utils && \
+	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20220906/llvm-mingw-20220906-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
+	tar -C / -xf /tmp/llvm-mingw.tar.xz
 
 ###############################################################################
 # osslsigncode
@@ -64,3 +69,6 @@ WORKDIR /build
 # Setup Dotnet 4.0
 ENV WINEARCH=win32
 RUN /usr/local/bin/winetricks --unattended dotnet40
+
+RUN apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
