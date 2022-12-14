@@ -5,11 +5,11 @@ all: pull build
 # See https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/
 .PHONY: build
 build:
-	docker build . -t karlvr/win-build:manifest-amd64 --build-arg ARCH=amd64/
+	docker build . -t karlvr/win-build --build-arg ARCH=amd64/
 
 .PHONY: pull
 pull:
-	docker pull ubuntu:22.04
+	docker pull amd64/ubuntu:22.04
 
 .PHONY: push
 push:
