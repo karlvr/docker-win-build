@@ -5,7 +5,7 @@ all: pull build
 # See https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/
 .PHONY: build
 build:
-	docker build . -t karlvr/win-build --build-arg ARCH=amd64/
+	docker build . -t karlvr/win-build
 
 .PHONY: pull
 pull:
@@ -14,3 +14,7 @@ pull:
 .PHONY: push
 push:
 	docker push karlvr/win-build
+
+.PHONY: run
+run:
+	docker run -it --rm karlvr/win-build bash
