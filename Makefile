@@ -5,7 +5,7 @@ all: pull build
 # See https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/
 .PHONY: build
 build:
-	docker build . -t karlvr/win-build
+	docker build . -t karlvr/win-build:v50
 
 .PHONY: pull
 pull:
@@ -13,8 +13,8 @@ pull:
 
 .PHONY: push
 push:
-	docker push karlvr/win-build
+	docker push karlvr/win-build:v50
 
 .PHONY: run
 run:
-	docker run -it --rm karlvr/win-build bash
+	docker run -it --rm karlvr/win-build:v50 bash

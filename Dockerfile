@@ -1,11 +1,16 @@
-# WiX Toolset
-# Create Windows installation packages
-
-# Run WiX on Linux using Wine
-
 FROM --platform=x86_64 ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+###############################################################################
+# llvm-mingw
+# https://github.com/mstorsjo/llvm-mingw
+RUN apt-get update && \
+	apt-get install -y curl xz-utils && \
+	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
+	mkdir -p /llvm-mingw && \
+	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
+	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
 
 ###############################################################################
 # osslsigncode
@@ -20,36 +25,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 # https://sourceforge.net/p/osslsigncode/osslsigncode/ci/master/tree/
 # https://stackoverflow.com/a/29073957/1951952
 
-RUN apt-get update && apt-get install -y osslsigncode
+RUN apt-get update && apt-get install -y --no-install-recommends osslsigncode
 
 ###############################################################################
-# WiX
+# msix-packaging
 
-# Wine repository
-RUN dpkg --add-architecture i386 && \
-	apt-get update && \
-	apt-get install -y wget apt-transport-https gnupg lsb-core && \
-	mkdir -p /etc/apt/keyrings && \
-	wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
-	wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -cs)/winehq-$(lsb_release -cs).sources && \
-	apt-get update
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends git && \
+	git clone https://github.com/microsoft/msix-packaging.git --depth 1
+RUN apt-get install -y --no-install-recommends cmake make build-essential
+RUN apt-get install -y --no-install-recommends clang
+RUN apt-get install -y --no-install-recommends zlib1g-dev
+RUN cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests
+RUN cp msix-packaging/.vs/bin/makemsix /usr/local/bin
 
-# Install Wine
-RUN apt-get install -y winehq-stable
-
-# https://wiki.winehq.org/Winetricks
-RUN wget -O /usr/local/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && \
-	chmod +x /usr/local/bin/winetricks
-
-# Install WIX
-RUN apt-get install -y unzip && \
-	mkdir -p /opt/wix && \
-	wget -O /opt/wix/wix.zip https://github.com/wixtoolset/wix3/releases/download/wix311rtm/wix311-binaries.zip && \
-	cd /opt/wix && \
-	unzip wix.zip && \
-	rm wix.zip
-
-RUN apt-get install -y xauth ca-certificates
+###############################################################################
 
 RUN useradd --create-home --home /home/builder --groups users builder --shell /bin/bash
 RUN mkdir /build
@@ -60,17 +50,3 @@ RUN apt-get clean && \
 USER builder
 WORKDIR /build
 
-# Setup Dotnet 4.0
-ENV WINEARCH=win32
-RUN /usr/local/bin/winetricks --verbose --unattended dotnet40 && \
-	rm -rf /tmp/winetricks*
-
-###############################################################################
-# llvm-mingw
-# https://github.com/mstorsjo/llvm-mingw
-RUN apt-get update && \
-	apt-get install -y curl xz-utils && \
-	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
-	mkdir -p /llvm-mingw && \
-	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
-	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
