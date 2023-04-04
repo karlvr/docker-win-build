@@ -3,7 +3,7 @@ all: pull build
 
 .PHONY: build
 build:
-	docker build . -t karlvr/win-build
+	docker build . -t karlvr/win-build:v46
 
 .PHONY: pull
 pull:
@@ -11,4 +11,4 @@ pull:
 
 .PHONY: push
 push:
-	docker push karlvr/win-build
+	docker push karlvr/win-build:v46
