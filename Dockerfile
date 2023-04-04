@@ -31,13 +31,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends osslsigncode
 # msix-packaging
 
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends git && \
-	git clone https://github.com/microsoft/msix-packaging.git --depth 1
-RUN apt-get install -y --no-install-recommends cmake make build-essential
-RUN apt-get install -y --no-install-recommends clang
-RUN apt-get install -y --no-install-recommends zlib1g-dev
-RUN cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests
-RUN cp msix-packaging/.vs/bin/makemsix /usr/local/bin
+	apt-get install -y --no-install-recommends git cmake make clang zlib1g-dev && \
+	git clone https://github.com/microsoft/msix-packaging.git --depth 1 && \
+	cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests && \
+	cp .vs/bin/makemsix /usr/local/bin
 
 ###############################################################################
 
@@ -49,4 +46,3 @@ RUN apt-get clean && \
 
 USER builder
 WORKDIR /build
-
