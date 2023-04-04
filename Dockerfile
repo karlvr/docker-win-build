@@ -1,4 +1,4 @@
-FROM --platform=x86_64 ubuntu:22.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -6,8 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # llvm-mingw
 # https://github.com/mstorsjo/llvm-mingw
 RUN apt-get update && \
-	apt-get install -y curl xz-utils && \
-	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-msvcrt-ubuntu-18.04-x86_64.tar.xz && \
+	apt-get install -y --no-install-recommends ca-certificates curl xz-utils && \
+	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-ucrt-ubuntu-18.04-aarch64.tar.xz && \
 	mkdir -p /llvm-mingw && \
 	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
 	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
