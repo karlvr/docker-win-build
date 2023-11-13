@@ -13,6 +13,15 @@ RUN apt-get update && \
 	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
 
 ###############################################################################
+# msix-packaging
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends git cmake make clang zlib1g-dev && \
+	git clone https://github.com/microsoft/msix-packaging.git --depth 1 && \
+	cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests && \
+	cp .vs/bin/makemsix /usr/local/bin
+
+###############################################################################
 # osslsigncode
 
 # OpenSSL-based signcode utility
@@ -21,20 +30,17 @@ RUN apt-get update && \
 # CAB and MSI files - uses OpenSSL and libcurl. It also supports 
 # timestamping (Authenticode and RFC3161).
 
-# https://sourceforge.net/projects/osslsigncode/
-# https://sourceforge.net/p/osslsigncode/osslsigncode/ci/master/tree/
+# https://github.com/mtrojnar/osslsigncode
 # https://stackoverflow.com/a/29073957/1951952
 
-RUN apt-get update && apt-get install -y --no-install-recommends osslsigncode
-
-###############################################################################
-# msix-packaging
-
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends git cmake make clang zlib1g-dev && \
-	git clone https://github.com/microsoft/msix-packaging.git --depth 1 && \
-	cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests && \
-	cp .vs/bin/makemsix /usr/local/bin
+	apt-get install -y --no-install-recommends cmake libssl-dev libcurl4-openssl-dev zlib1g-dev python3 && \
+	curl -o osslsigncode.tar.gz -L https://github.com/mtrojnar/osslsigncode/archive/refs/tags/2.7.tar.gz && \
+	mkdir osslsigncode && cd osslsigncode && \
+	tar --strip-components=1 -zxf ../osslsigncode.tar.gz && \
+	mkdir build && cd build && cmake -S .. && \
+	cmake --build . && \
+	cmake --install .
 
 ###############################################################################
 
