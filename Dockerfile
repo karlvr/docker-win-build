@@ -43,6 +43,14 @@ RUN apt-get update && \
 	cmake --install .
 
 ###############################################################################
+# jsign
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends openjdk-17-jdk-headless
+COPY ./jsign_5.1-SNAPSHOT_all.deb /
+RUN dpkg --install /jsign_5.1-SNAPSHOT_all.deb
+
+###############################################################################
 
 RUN useradd --create-home --home /home/builder --groups users builder --shell /bin/bash
 RUN mkdir /build
