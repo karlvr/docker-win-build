@@ -14,6 +14,7 @@ RUN apt-get update && \
 
 ###############################################################################
 # msix-packaging
+# https://learn.microsoft.com/en-us/windows/msix/packaging-tool/tool-overview
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends git cmake make clang zlib1g-dev && \
