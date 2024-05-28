@@ -10,6 +10,14 @@ osslsigncode and Jsign are used in preference to Mono signcode as Mono signcode 
 make build
 ```
 
+## Updating
+
+Some of the dependencies are pulled fresh using `apt-get` and others we download specifically so we need to update them in the `Dockerfile`:
+
+* Visit the [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) website, go to releases, and copy the URL and then update the date stamps in the URL to download llvm-mingw.
+* Visit the [osslsigncode](https://github.com/mtrojnar/osslsigncode) website, go to releases and update the tag version on our download.
+* Visit the [JSign](https://github.com/ebourg/jsign) website, go to releases, and copy the URL for the `.deb` file, then update the URL and file names.
+
 ## Usage
 
 You can run the image interactively, or run individual commands or scripts by appending them
