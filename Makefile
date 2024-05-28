@@ -1,8 +1,6 @@
 .PHONY: all
 all: pull build
 
-# We must build as amd64 as we use Wine which requires i386
-# See https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/
 .PHONY: build
 build:
 	docker build . -t karlvr/win-build:v50
