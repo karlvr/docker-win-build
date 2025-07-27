@@ -67,6 +67,13 @@ RUN apt-get update && \
 	rm /jsign_6.0_all.deb
 
 ###############################################################################
+# msitools + wixl
+
+RUN apt update && apt install -y \
+  msitools \
+  wixl
+
+###############################################################################
 
 RUN useradd --create-home --home /home/builder --groups users builder --shell /bin/bash
 RUN mkdir /build
