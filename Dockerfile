@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -15,7 +15,7 @@ RUN apt-get update && \
 ###############################################################################
 # CMake
 # We need to install the latest CMake as msix-packaging uses a later one than
-# provided in Ubuntu 22.
+# provided in Ubuntu 24.
 # https://cmake.org/
 # https://apt.kitware.com
 

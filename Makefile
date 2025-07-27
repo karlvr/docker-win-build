@@ -7,7 +7,7 @@ build:
 
 .PHONY: pull
 pull:
-	docker pull ubuntu:22.04
+	docker pull ubuntu:24.04
 
 .PHONY: push
 push:
