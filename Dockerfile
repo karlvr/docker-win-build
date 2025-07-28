@@ -50,15 +50,6 @@ RUN apt-get update && \
 	cmake --install .
 
 ###############################################################################
-# jsign
-
-RUN apt-get update && \
-	apt-get install -y --no-install-recommends openjdk-17-jdk-headless && \
-	curl -L -o ./jsign_6.0_all.deb https://github.com/ebourg/jsign/releases/download/6.0/jsign_6.0_all.deb && \
-	dpkg --install /jsign_6.0_all.deb && \
-	rm /jsign_6.0_all.deb
-
-###############################################################################
 # msitools + wixl
 
 RUN apt update && apt install -y \
