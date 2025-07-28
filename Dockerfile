@@ -1,15 +1,18 @@
 FROM ubuntu:25.10
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends ca-certificates curl
 
 ###############################################################################
 # llvm-mingw
 # https://github.com/mstorsjo/llvm-mingw
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends ca-certificates curl xz-utils && \
-	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20240518/llvm-mingw-20240518-ucrt-ubuntu-20.04-$(dpkg --print-architecture | sed -e 's/arm64/aarch64/' | sed -e 's/amd64/x86_64/').tar.xz && \
+	apt-get install -y --no-install-recommends xz-utils && \
+	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20250709/llvm-mingw-20250709-ucrt-ubuntu-22.04-$(dpkg --print-architecture | sed -e 's/arm64/aarch64/' | sed -e 's/amd64/x86_64/').tar.xz && \
 	mkdir -p /llvm-mingw && \
 	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
+	rm -f /tmp/llvm-mingw.tar.xz && \
 	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
 
 ###############################################################################
