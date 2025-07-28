@@ -52,9 +52,17 @@ RUN apt-get update && \
 ###############################################################################
 # msitools + wixl
 
-RUN apt update && apt install -y \
-  msitools \
-  wixl
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends meson git clang valac bison libgsf-1-dev libgcab-dev gobject-introspection gir1.2-glib-2.0-dev && \
+	cd /tmp && \
+	git clone --depth=1 https://github.com/karlvr/msitools.git && \
+	cd msitools && \
+	git submodule init && \
+	git submodule update && \
+	meson setup build && \
+	meson compile -C build && \
+	meson install -C build && \
+	ldconfig && true && true && true && true
 
 ###############################################################################
 
