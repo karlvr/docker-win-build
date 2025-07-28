@@ -1,4 +1,4 @@
-FROM ubuntu:25.10
+FROM ubuntu:25.10 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
@@ -62,14 +62,22 @@ RUN apt-get update && \
 	meson setup build && \
 	meson compile -C build && \
 	meson install -C build && \
-	ldconfig && true && true && true && true
+	ldconfig
 
 ###############################################################################
 
-RUN useradd --create-home --home /home/builder --groups users builder --shell /bin/bash
-RUN mkdir /build
+FROM ubuntu:25.10
 
-RUN apt-get clean && \
+COPY --from=build /usr/local/bin/ /usr/local/bin/
+COPY --from=build /usr/local/lib/ /usr/local/lib/
+COPY --from=build /usr/local/share/ /usr/local/share/
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends curl libgsf-bin libgcab-1.0-0 gir1.2-glib-2.0 && \
+	useradd --create-home --home /home/builder --groups users builder --shell /bin/bash && \
+	mkdir /build && \
+	ldconfig && \
+	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
 USER builder
