@@ -21,9 +21,11 @@ RUN apt-get update && \
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends git cmake make clang zlib1g-dev && \
+	cd /tmp && \
 	git clone https://github.com/microsoft/msix-packaging.git --depth 1 && \
 	cd msix-packaging && ./makelinux.sh -sb --pack --skip-samples --skip-tests && \
-	cp .vs/bin/makemsix /usr/local/bin
+	cp .vs/bin/makemsix /usr/local/bin && \
+	cp --no-dereference .vs/lib/*.so .vs/lib/*.so.* /usr/local/lib
 
 ###############################################################################
 # osslsigncode
