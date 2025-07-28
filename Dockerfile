@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:25.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,20 +11,6 @@ RUN apt-get update && \
 	mkdir -p /llvm-mingw && \
 	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
 	echo "export PATH=\$PATH:/llvm-mingw/bin" > /etc/profile.d/99-llvm-mingw
-
-###############################################################################
-# CMake
-# We need to install the latest CMake as msix-packaging uses a later one than
-# provided in Ubuntu 24.
-# https://cmake.org/
-# https://apt.kitware.com
-
-RUN apt-get update && \
-	apt-get install -y ca-certificates gpg curl && \
-	curl https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor - > /usr/share/keyrings/kitware-archive-keyring.gpg && \
-	echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' > /etc/apt/sources.list.d/kitware.list && \
-	apt-get update && \
-	apt-get upgrade -y cmake
 
 ###############################################################################
 # msix-packaging
