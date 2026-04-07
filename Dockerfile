@@ -42,7 +42,7 @@ RUN apt-get update && \
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends cmake libssl-dev libcurl4-openssl-dev zlib1g-dev python3 && \
 	cd /tmp && \
-	curl -o osslsigncode.tar.gz -L https://github.com/mtrojnar/osslsigncode/archive/refs/tags/2.8.tar.gz && \
+	curl -o osslsigncode.tar.gz -L https://github.com/mtrojnar/osslsigncode/archive/refs/tags/2.13.tar.gz && \
 	mkdir osslsigncode && cd osslsigncode && \
 	tar --strip-components=1 -zxf ../osslsigncode.tar.gz && \
 	mkdir build && cd build && cmake -S .. && \
