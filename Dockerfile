@@ -9,7 +9,7 @@ RUN apt-get update && \
 # https://github.com/mstorsjo/llvm-mingw
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends xz-utils && \
-	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20250709/llvm-mingw-20250709-ucrt-ubuntu-22.04-$(dpkg --print-architecture | sed -e 's/arm64/aarch64/' | sed -e 's/amd64/x86_64/').tar.xz && \
+	curl -o /tmp/llvm-mingw.tar.xz -L https://github.com/mstorsjo/llvm-mingw/releases/download/20260324/llvm-mingw-20260324-ucrt-ubuntu-22.04-$(dpkg --print-architecture | sed -e 's/arm64/aarch64/' | sed -e 's/amd64/x86_64/').tar.xz && \
 	mkdir -p /llvm-mingw && \
 	tar -C /llvm-mingw --strip-components 1 -xf /tmp/llvm-mingw.tar.xz && \
 	rm -f /tmp/llvm-mingw.tar.xz && \
