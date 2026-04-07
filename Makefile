@@ -1,18 +1,14 @@
 .PHONY: all
-all: pull build
+all: build
 
 .PHONY: build
 build:
-	docker build . -t karlvr/win-build:v50.2
-
-.PHONY: pull
-pull:
-	docker pull ubuntu:25.10
+	docker buildx build --pull . -t karlvr/win-build:latest
 
 .PHONY: push
 push:
-	docker push karlvr/win-build:v50.2
+	docker push karlvr/win-build:latest
 
 .PHONY: run
 run:
-	docker run -it --rm karlvr/win-build:v50.2 bash
+	docker run -it --rm karlvr/win-build:latest bash

@@ -10,6 +10,8 @@ A Docker image to build, sign and package 32 and 64 bit Windows executables. Inc
 make build
 ```
 
+After making changes consider pushing a version with a forever-tag, such as `v50.2`.
+
 ## Updating
 
 Some of the dependencies are pulled fresh using `apt-get` and others we download specifically so we need to update them in the `Dockerfile`:
