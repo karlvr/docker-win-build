@@ -81,5 +81,14 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
+###############################################################################
+# jsign
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends default-jre-headless && \
+	curl -L -o ./jsign_7.4_all.deb https://github.com/ebourg/jsign/releases/download/7.4/jsign_7.4_all.deb && \
+	dpkg --install /jsign_7.4_all.deb && \
+	rm /jsign_7.4_all.deb
+
 USER builder
 WORKDIR /build

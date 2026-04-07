@@ -2,7 +2,7 @@
 
 A Docker image to build, sign and package 32 and 64 bit Windows executables. Includes [llvm-mingw](https://github.com/mstorsjo/llvm-mingw), [osslsigncode](https://github.com/mtrojnar/osslsigncode), [Jsign](https://github.com/ebourg/jsign) and [makemsix](https://learn.microsoft.com/en-us/windows/msix/packaging-tool/tool-overview).
 
-osslsigncode and Jsign are used in preference to Mono signcode as Mono signcode cannot sign `.appx`` files, while osslsigncode can.
+`osslsigncode` and `Jsign` are used in preference to Mono signcode as Mono signcode cannot sign `.appx` files.
 
 ## Building
 
